@@ -88,7 +88,7 @@ export default function MockInterview() {
 
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
+            className="bg-gray-100 hover:bg-gray-200 px-4 py-2 cursor-pointer rounded-xl"
           >
             ← Back
           </button>
@@ -125,7 +125,7 @@ export default function MockInterview() {
           <button
             onClick={generateQuestion}
             disabled={loading}
-            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold"
+            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold cursor-pointer"
           >
             {loading
               ? "Generating..."
@@ -159,7 +159,7 @@ export default function MockInterview() {
             <button
               onClick={evaluateAnswer}
               disabled={loading}
-              className="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold"
+              className="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold cursor-pointer"
             >
               {loading
                 ? "Evaluating..."

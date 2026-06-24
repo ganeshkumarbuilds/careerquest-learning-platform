@@ -39,7 +39,7 @@ export default function Jobs() {
 
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-100 px-4 py-2 rounded-xl"
+            className="bg-gray-100 px-4 py-2 cursor-pointer rounded-xl"
           >
             ← Back
           </button>

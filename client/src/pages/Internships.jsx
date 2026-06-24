@@ -37,7 +37,7 @@ export default function Internships() {
         <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-white px-4 py-2 rounded-xl font-bold"
+            className="bg-white px-4 py-2 rounded-xl cursor-pointer font-bold"
           >
             ← Back
           </button>

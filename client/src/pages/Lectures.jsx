@@ -53,7 +53,7 @@ useEffect(() => {
 
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
+            className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl cursor-pointer"
           >
             ← Back
           </button>
@@ -130,7 +130,7 @@ useEffect(() => {
                       );
                     }
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold"
+                  className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold cursor-pointer"
                 >
                   ✅ Mark as Watched
                 </button>

@@ -34,13 +34,44 @@ export default function Dashboard() {
   const progress = Math.round(((currentXP - prevXP) / (nextXP - prevXP)) * 100);
 
   const stats = [
-    { label: 'Total XP', value: user?.xp || 0, icon: '⚡', color: 'text-yellow-500', bg: 'bg-orange-200' },
-    { label: 'Current Level', value: `${user?.level || 1}/7`, icon: '🎯', color: 'text-pink-500', bg: 'bg-blue-200' },
-    { label: 'Day Streak', value: user?.streak || 0, icon: '🔥', color: 'text-orange-500', bg: 'bg-orange-200' },
-    { label: 'Tasks Done', value: user?.completedTasks?.length || 0, icon: '✅', color: 'text-teal-500', bg: 'bg-teal-200' },
-    { label: 'Quizzes Passed', value: user?.quizzesPassed?.length || 0, icon: '🧠', color: 'text-purple-500', bg: 'bg-purple-200' },
-    { label: 'Badges', value: user?.badges?.length || 0, icon: '🎖️', color: 'text-blue-500', bg: 'bg-blue-200' },
-  ];
+  {
+    label: "Total XP",
+    value: user?.xp || 0,
+    icon: "⚡",
+    bg: "bg-yellow-100",
+  },
+  {
+    label: "Current Level",
+    value: `${user?.level || 1}/7`,
+    icon: "🎯",
+    bg: "bg-blue-100",
+  },
+  {
+    label: "Day Streak",
+    value: user?.streak || 0,
+    icon: "🔥",
+    bg: "bg-orange-100",
+  },
+  {
+    label: "Tasks Done",
+    value: user?.completedTasks?.length || 0,
+    icon: "✅",
+    bg: "bg-green-100",
+  },
+  {
+    label: "Quizzes Passed",
+    value: user?.quizzesPassed?.length || 0,
+    icon: "🧠",
+    bg: "bg-purple-100",
+  },
+  {
+    label: "Badges",
+    value: user?.badges?.length || 0,
+    icon: "🏅",
+    bg: "bg-cyan-100",
+  },
+];
+
 
   if (loading) return (
     <div className="min-h-screen bg-teal-300 flex items-center justify-center">
@@ -50,6 +81,50 @@ export default function Dashboard() {
       </div>
     </div>
   );
+  const levelTitles = {
+  1: "Explorer",
+  2: "Learner",
+  3: "Achiever",
+  4: "Expert",
+  5: "Master",
+  6: "Champion",
+  7: "Legend",
+};
+
+const xpNeeded = nextXP - currentXP;
+
+const goals = [
+  {
+    text: "Complete Daily Mission",
+    done: (user?.completedTasks?.length || 0) > 0,
+  },
+  {
+    text: "Watch a Lecture",
+    done:
+      user?.completedTasks?.some(
+        (task) => task.startsWith("Lecture-")
+      ) || false,
+  },
+  {
+    text: "Pass an AI Quiz",
+    done: (user?.quizzesPassed?.length || 0) > 0,
+  },
+];
+
+const completedGoals = goals.filter(
+  (goal) => goal.done
+).length;
+
+const goalProgress = Math.round(
+  (completedGoals / goals.length) * 100
+);
+console.log("completedTasks", user?.completedTasks);
+console.log("completedLectures", user?.completedLectures);
+console.log("quizzesPassed", user?.quizzesPassed);
+
+console.log("completedGoals", completedGoals);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-teal-400">
@@ -66,10 +141,11 @@ export default function Dashboard() {
               <span>⚡</span>
               <span className="text-yellow-600 font-bold text-sm">{user?.xp} XP</span>
             </div>
-            <div className="flex items-center gap-2 bg-green-300 border border-orange-200 rounded-full px-4 py-1.5">
+            <div className="flex items-center gap-2 bg-white border border-orange-200 rounded-full px-4 py-1.5">
               <span>🔥</span>
               <span className="text-orange-600  font-bold text-sm">{user?.streak} days</span>
             </div>
+            
             <button
               onClick={logout}
               className="bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-xl transition cursor-pointer"
@@ -87,50 +163,169 @@ export default function Dashboard() {
           <h1 className="text-3xl font-black text-gray-800">
             Hey {user?.name?.split(' ')[0]} 👋
           </h1>
-          <p className="text-gray-900 mt-1">Keep going! You're on Level {user?.level} of your journey.</p>
+          <p className="text-gray-900 mt-1">
+  You're only {xpNeeded} XP away from reaching
+  Level {(user?.level || 1) + 1}.
+</p>
         </div>
 
         {/* XP Progress Card */}
-        <div className="bg-teal-400 rounded-3xl border border-gray-100 shadow-sm p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="text-xs text-gray-800 uppercase tracking-widest font-bold mb-1">Current Level</p>
-              <p className="text-2xl font-black text-gray-800">Level {user?.level} <span className="text-pink-500">→</span> Level {(user?.level || 0) + 1}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs text-gray-800 uppercase tracking-widest font-bold mb-1">XP Progress</p>
-              <p className="text-2xl font-black text-gray-800">{currentXP} <span className="text-gray-800 font-normal text-lg">/ {nextXP}</span></p>
-            </div>
-          </div>
-          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div
-              className="h-full bg-yellow-400 rounded-full transition-all duration-700"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <p className="text-xs text-gray-800 mt-2">{progress}% to next level</p>
-        </div>
+<div className="bg-white rounded-3xl shadow-xl p-8 mb-6">
+
+  <div className="flex justify-between items-center mb-6">
+
+    <div>
+      <p className="uppercase tracking-widest text-xs font-bold text-gray-500">
+        Current Rank
+      </p>
+
+      <h2 className="text-4xl font-black text-gray-800 mt-2">
+        🏅 {levelTitles[user?.level]}
+      </h2>
+
+      <p className="text-gray-500 mt-2">
+        Level {user?.level} • {xpNeeded} XP to next level
+      </p>
+    </div>
+
+    <div className="text-right">
+      <p className="uppercase tracking-widest text-xs font-bold text-gray-500">
+        XP Progress
+      </p>
+
+      <h2 className="text-4xl font-black text-gray-800 mt-2">
+        {currentXP}
+        <span className="text-xl text-gray-500">
+          / {nextXP}
+        </span>
+      </h2>
+    </div>
+
+  </div>
+
+  <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+
+    <div
+      className="h-6 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 rounded-full transition-all duration-700"
+      style={{
+        width: `${progress}%`,
+      }}
+    />
+
+  </div>
+
+  <div className="flex justify-between mt-3 text-sm">
+
+    <span className="font-medium text-gray-600">
+      {progress}% Completed
+    </span>
+
+    <span className="font-medium text-gray-600">
+      {xpNeeded} XP Remaining
+    </span>
+
+  </div>
+
+</div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-          {stats.map(s => (
-            <div key={s.label} className="bg-red-200 text-slate-900 rounded-2xl border border-gray-100 shadow-sm p-5 flex items-center gap-4">
-              <div className={`${s.bg} w-12 h-12 rounded-xl flex items-center justify-center text-2xl`}>
-                {s.icon}
-              </div>
-              <div>
-                <p className="text-2xl font-black text-gray-800">{s.value}</p>
-                <p className="text-xs text-gray-900 font-medium">{s.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+<div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+  {stats.map((s) => (
+    <div
+      key={s.label}
+      className="bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-5 flex items-center gap-4">
+      <div
+        className={`
+          ${s.bg} w-14 h-14 rounded-2xl flex items-center justify-center text-2xl`}>
+        {s.icon}
+      </div>
+
+      <div>
+        <p className="text-2xl font-black text-gray-800">
+          {s.value}
+        </p>
+
+        <p className="text-xs text-gray-500 font-medium">
+          {s.label}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<div className="bg-white rounded-3xl shadow-xl p-6 mb-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-black text-gray-800">
+          🎯 Today's Goals
+        </h2>
+
+        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">
+          +50 XP Reward
+        </span>
+      </div>
+
+      <div className="space-y-3 ">
+        {goals.map((goal, index) => (
+  <div
+    key={index}
+    className="flex items-center gap-3"
+  >
+    <input
+      type="checkbox"
+      className="w-5 h-5"
+    />
+
+    <span
+      className={
+        goal.done
+          ? "text-gray-800"
+          : "text-gray-800"
+      }
+    >
+      {goal.text}
+    </span>
+  </div>
+))}
+      </div>
+    </div>
+
+<div className="bg-white rounded-3xl shadow-xl p-6 mb-6">
+
+  <h2 className="text-2xl font-black text-gray-800 mb-5">
+    🏆 Recent Achievements
+  </h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+    <div className="bg-yellow-50 rounded-2xl p-4 text-center">
+      <div className="text-3xl">🥇</div>
+      <p className="font-bold mt-2">First Login</p>
+    </div>
+
+    <div className="bg-green-50 rounded-2xl p-4 text-center">
+      <div className="text-3xl">🎯</div>
+      <p className="font-bold mt-2">Mission Complete</p>
+    </div>
+
+    <div className="bg-blue-50 rounded-2xl p-4 text-center">
+      <div className="text-3xl">⚡</div>
+      <p className="font-bold mt-2">Earned XP</p>
+    </div>
+
+    <div className="bg-purple-50 rounded-2xl p-4 text-center">
+      <div className="text-3xl">🏅</div>
+      <p className="font-bold mt-2">First Badge</p>
+    </div>
+
+  </div>
+
+</div>
 
         {/* Career Track + Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           {/* Current Career */}
-          <div className="bg-green-300 rounded-3xl border border-gray-100 shadow-sm p-6">
+          <div className="bg-white rounded-3xl shadow-xl p-6">
             <p className="text-xs text-gray-800 uppercase tracking-widest font-bold mb-4">Your Career Track</p>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl">💻</div>
@@ -145,11 +340,20 @@ export default function Dashboard() {
             >
               Continue Learning →
             </button>
-          </div>
+            </div>
+     
 
           {/* Quick Actions */}
-          <div className=" bg-indigo-400 grid rounded-3xl border border-gray-100 shadow-sm p-6">
-            <p className="text-xs text-gray-800 uppercase tracking-widest font-bold mb-4">Quick Actions</p>
+          <div className="bg-white rounded-3xl shadow-xl p-6 ">
+            <div className="mb-5">
+  <h2 className="text-2xl font-black text-gray-800">
+    ⚡ Quick Actions
+  </h2>
+
+  <p className="text-gray-500 text-sm">
+    Access all learning tools
+  </p>
+</div>
             <div className="grid grid-cols-2 gap-3">
               {[
   {

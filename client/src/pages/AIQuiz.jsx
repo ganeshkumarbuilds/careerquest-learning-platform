@@ -60,7 +60,7 @@ export default function AIQuiz() {
 
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-100 px-4 py-2 rounded-xl"
+            className="bg-gray-100 px-4 py-2 cursor-pointer rounded-xl"
           >
             ← Back
           </button>
@@ -137,7 +137,7 @@ export default function AIQuiz() {
                               option,
                           })
                         }
-                        className={`block w-full text-left px-4 py-3 rounded-xl border ${
+                        className={`block w-full text-left px-4 py-3 cursor-pointer rounded-xl border ${
                           answers[index] === option
                             ? "bg-purple-100 border-purple-500"
                             : "bg-gray-50"

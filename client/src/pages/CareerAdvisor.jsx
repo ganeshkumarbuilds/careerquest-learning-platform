@@ -61,7 +61,7 @@ export default function CareerAdvisor() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-xl"
+            className="bg-green-400 hover:bg-green-500 cursor-pointer px-4 py-2 rounded-xl"
           >
             ← Back
           </button>
